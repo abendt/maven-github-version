@@ -2,7 +2,7 @@ name: build stage image
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   buildNumber: ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
