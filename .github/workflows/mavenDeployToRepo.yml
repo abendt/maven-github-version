@@ -32,7 +32,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Set maven version
-        run: mvn -B versions:set -DnewVersion=${{ env.buildNumber }}
+        run: mvn -B versions:set -DnewVersion=${{ env.buildVersion }}
 
       - name: Build jar file with mvn
         run: mvn -B verify
