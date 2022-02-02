@@ -32,8 +32,24 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Generate build number
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{secrets.github_token}}
+
+      - name: Print new build number
+        run: echo "Build number is $BUILD_NUMBER"
+        # Or, if you're on Windows: echo "Build number is ${env:BUILD_NUMBER}"
+
+      - name: generate version number
+        run: echo "MAVEN_VERSION_NUMBER=$(echo "1.0.0-$GITHUB_SHA")" >> $GITHUB_ENV
+
+      - name: Print new version number
+        run: echo "Build number is $MAVEN_VERSION_NUMBER"
+
+
       - name: Set maven version
-        run: mvn -B versions:set -DnewVersion=${{ env.buildVersion }}
+        run: mvn -B versions:set -DnewVersion="$MAVEN_VERSION_NUMBER"
 
       - name: Build jar file with mvn
         run: mvn -B verify
@@ -45,6 +61,6 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/${{ env.buildVersion }}',
+              ref: 'refs/tags/$MAVEN_VERSION_NUMBER',
               sha: context.sha
             })
