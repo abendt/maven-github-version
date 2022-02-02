@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  buildNumber: ${{ github.run_id }}-${{ github.run_number }}
+  buildVersion: "1.0."${{ github.run_id }}-${{ github.run_number }}
 
 jobs:
   build:
@@ -31,5 +31,19 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Set maven version
+        run: mvn -B versions:set -DnewVersion=${{ env.buildNumber }}
+
       - name: Build jar file with mvn
-        run: mvn -B verify -DbuildNumber=${{ env.buildNumber }}
+        run: mvn -B verify
+
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ env.buildNumber }}',
+              sha: context.sha
+            })
