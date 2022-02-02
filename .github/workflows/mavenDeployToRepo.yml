@@ -42,7 +42,7 @@ jobs:
         # Or, if you're on Windows: echo "Build number is ${env:BUILD_NUMBER}"
 
       - name: generate version number
-        run: echo "MAVEN_VERSION_NUMBER=$(echo "1.0.0-$GITHUB_SHA")" >> $GITHUB_ENV
+        run: echo "MAVEN_VERSION_NUMBER=$(echo "1.0.0-$BUILD_NUMBER")" >> $GITHUB_ENV
 
       - name: Print new version number
         run: echo "Build number is $MAVEN_VERSION_NUMBER"
