@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  buildVersion: "1.0."${{ github.run_id }}-${{ github.run_number }}
+  buildVersion: '1.0.${{ github.run_id }}-${{ github.run_number }}'
 
 jobs:
   build:
